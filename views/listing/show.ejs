@@ -1,0 +1,253 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<script>
+  let mapToken = "<%=process.env.map_Token%>";
+  const locationMaker = <%-JSON.stringify(data.mapCoordinates.coordinates)%>;
+</script>
+<body>
+  <a href="/listing" class="back-btn"
+    ><i class="fa-solid fa-arrow-left"></i>&nbsp Back
+  </a>
+  <div class="row mt-2">
+    <div class="col-10 offset-1">
+      <div class="top-view">
+        <h4><%= data.title %></h4>
+        <div class="top-view-btns">
+          <p><i class="fa-regular fa-share-from-square"></i> &nbsp share</p>
+          <p><i class="fa-solid fa-heart"></i> &nbsp save</p>
+        </div>
+      </div>
+    </div>
+    <div class="card col-10 offset-1">
+      <img src="<%=data.image.url %>" class="card-img-top show-img" alt="..." />
+      <div class="card-body">
+        <div class="card-text">
+          <p id="owner">Owned By: <%=data.owner.username%></p>
+          <b><%= data.title %></b><br />
+          <% if (data.price !==null && data.price !==undefined) { %> &#8377; <%=
+          data.price.toLocaleString('en-IN') %> / night <% } else { %> Price not
+          available <% } %>
+          <br />
+          <p style="color: tomato; display: inline-block">
+            <%=data.location %> , <%= data.country %>
+          </p>
+          <hr />
+          <div class="col-12 card-text">
+            <p><%=data.description %></p>
+            <p>
+              <b id="head-para">About this space</b><br />
+              The elegant 4 bedrooms beach house is located on the coasts of
+              Mangalore and equipped with luxurious interiors and sprawling
+              lawn, a perfect gateway from the hustle and bustle of the city.
+              <br />
+              <b id="head-para"> Reasons, why the place is a, must-visit:</b>
+              <br />
+              1. The bright, plush and exclusive property is a perfect gateway
+              with your family and friends from the maddening city life. The
+              interiors are decored with modern amenities and sophisticated
+              décor and the villa opens up to the pristine beach of surathkal,
+              giving it one of the most breath-taking views from all angles.
+              <br />
+              2. Located a stone's throw away from the beach, the property adds
+              a beautiful touch to the villa. One can fall asleep to the sound
+              of crashing waves and wake up to the chirping of birds. It's
+              picturesque surrounding perfectly blends into the elegant villa,
+              making it one of the most beautiful and relaxing vacations of your
+              lifetime. <br />
+            </p>
+          </div>
+        </div>
+      </div>
+      <% if(isLogged && isLogged._id.equals(data.owner._id)){ %>
+      <div class="btns col-6">
+        <button>
+          <a
+            style="text-decoration: none; color: white"
+            href="http://localhost:8080/listing/edit/<%=data._id %>"
+            >Edit</a
+          >
+        </button>
+        <form
+          method="post"
+          action="/listing/delete/<%=data._id%>?_method=DELETE"
+        >
+          <br />
+          <button>Delete</button>
+        </form>
+      </div>
+      <% } %>
+      <span id="offer-head">What this place Offers</span>
+      <div class="offers">
+        <div class="offer-set">
+          <p><i class="fa-solid fa-mountain-sun"></i>&nbsp; Valley View</p>
+          <p><i class="fa-solid fa-tv"></i> &nbsp;Tv</p>
+          <p><i class="fa-solid fa-cash-register"></i> &nbsp;Dryer</p>
+          <p><i class="fa-solid fa-square-parking"></i>Garden</p>
+          <p><i class="fa-solid fa-music"></i>Sound Sytem</p>
+        </div>
+        <div class="offer-set">
+          <p><i class="fa-solid fa-mountain-sun"></i>&nbsp; Valley View</p>
+          <p><i class="fa-solid fa-tv"></i> &nbsp;Tv</p>
+          <p><i class="fa-solid fa-cash-register"></i> &nbsp;Dryer</p>
+          <p><i class="fa-solid fa-square-parking"></i>Garden</p>
+          <p><i class="fa-solid fa-music"></i>Sound Sytem</p>
+        </div>
+        <div class="offer-set">
+          <p><i class="fa-solid fa-mountain-sun"></i>&nbsp; Valley View</p>
+          <p><i class="fa-solid fa-tv"></i> &nbsp;Tv</p>
+          <p><i class="fa-solid fa-cash-register"></i> &nbsp;Dryer</p>
+          <p><i class="fa-solid fa-square-parking"></i>Garden</p>
+          <p><i class="fa-solid fa-music"></i>Sound Sytem</p>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <% if(isLogged) {%>
+          <hr />
+          <% } %>
+        <% if(isLogged) { %>
+        <form
+          action="/listings/<%=data._id%>/reviews"
+          method="post"
+          class="needs-validation"
+          novalidate
+        >
+          <div class="review col-12 offset-1">
+            <fieldset class="starability-grow">
+              <legend>Your Rating:</legend>
+              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" />
+              <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+              <label for="first-rate1" title="Terrible">1 star</label>
+              <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+              <label for="first-rate2" title="Not good">2 stars</label>
+              <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+              <label for="first-rate3" title="Average">3 stars</label>
+              <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+              <label for="first-rate4" title="Very good">4 stars</label>
+              <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+              <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
+          </div>
+          <br>
+          <div class="review col-10 offset-1">
+            <label for="comments" class="form-label">Comments</label>
+            <textarea
+              placeholder="Nice place to visit...!"
+              required
+              name="review[comments]"
+              id="comments"
+              class="form-control"
+              cols="30"
+              rows="3"maxlength="350"
+            ></textarea>
+            <div class="invalid-feedback">Add your comments!</div>
+            <br />
+            <button class="btn btn-dark" type="submit">Submit</button>
+          </div>
+        </form>
+        <% if(data.reviews.length==0) { %>
+          <hr>
+        <% } %>
+        <% } %> <% if(data.reviews.length==0) { %>
+        <h4>No Reviews (yet)</h4>
+        <p>This host added by the <%= data.owner.username%></p>
+        <% } else { %>
+          <br>
+        <hr>
+        <div class="reviews-for">
+          <div class="overall-review">
+            <p>Overall Rating</p>
+            <p id="overall">4.7</p>
+          </div>
+          <div class="first-reviewfor">
+            <p>Accuracy</p>
+            <p>4.7</p>
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <div class="first-reviewfor">
+            <p>Check-in</p>
+            <p>4.1</p>
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <div class="first-reviewfor">
+            <p>Cleanliness</p>
+            <p>4.0</p>
+            <i class="fa-solid fa-spray-can-sparkles"></i>
+          </div>
+          <div class="first-reviewfor">
+            <p>Communication</p>
+            <p>3.7</p>
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div class="first-reviewfor">
+            <p>Location</p>
+            <p>4.7</p>
+            <i class="fa-solid fa-location-arrow"></i>
+          </div>
+        </div>
+        <% } %>
+        <hr />
+        <div class="reviews-cards col-12">
+          <div class="row">
+            <% for(reviews of data.reviews) { %>
+            <div class="col-sm-4 cards-reviews">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">
+                   <%=reviews.author.username%>&nbsp;
+                    <p class="starability-result" data-rating="<%=reviews.rating %>">
+                    </p>
+                  </h6>
+                  <br>
+                  <p class="card-text"><%=reviews.comments%></p>
+                  <% if(isLogged && isLogged._id.equals(reviews.author._id)) {%>
+                  <form
+                    action="/listings/<%=data._id %>/reviews/<%=reviews._id %>?_method=DELETE"
+                    method="post"
+                  >
+                    <button
+                      class="btn btn-white"
+                      style="border: 1px solid black"
+                    >
+                      delete
+                    </button>
+                  </form>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+        <% if(!data.reviews.length==0) { %>
+        <hr />
+        <% } %>
+        <div class="col-12 needtoFollow">
+          <div class="row">
+            <div class="col-sm-4 house-rule">
+              <h6>House Rules</h6>
+              <p>Check-in: 2:00 pm – 7:00 pm</p>
+              <p>Checkout before 11:00 am</p>
+              <p>8 guests maximum</p>
+            </div>
+            <div class="col-sm-4 safty-property">
+              <h6>Saftey & property</h6>
+              <p>No carbon monoxide alarm</p>
+              <p>No smoke alarm</p>
+              <p>Security camera/recording device</p>
+            </div>
+            <div class="col-sm-4 cancellation">
+              <h6>Cancellation policy</h6>
+              <p>This reservation is non-refundable.</p>
+              <p>
+                Review the Host’s full cancellation policy which applies even if
+                you cancel for illness or disruptions caused by COVID-19.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id='map' style='width: 100%; height: 500px; margin-top: 20px;'></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="/js/map.js"></script>
